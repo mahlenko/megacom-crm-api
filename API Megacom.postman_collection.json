@@ -1,0 +1,482 @@
+{
+	"info": {
+		"_postman_id": "40047b73-8c50-4b82-a0c1-bd9976dfbed3",
+		"name": "API Megacom",
+		"description": "Использование API Megacom CRM.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Задачи",
+			"item": [
+				{
+					"name": "Создать задачу",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "",
+									"description": "Название задачи",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "",
+									"description": "Описание задачи",
+									"type": "text"
+								},
+								{
+									"key": "date_begin",
+									"value": "",
+									"description": "Дата начала",
+									"type": "text"
+								},
+								{
+									"key": "date_end",
+									"value": "",
+									"description": "Дата когда нужно завершить задачу",
+									"type": "text"
+								},
+								{
+									"key": "require_report",
+									"value": "0",
+									"description": "Требовать подтверждение загрузкой файла или нет. По-умолчанию: не требовать подтверждение.",
+									"type": "text"
+								},
+								{
+									"key": "users_id",
+									"value": "",
+									"description": "ID пользователя CRM или массив ID {contractors}",
+									"type": "text"
+								},
+								{
+									"key": "group_id",
+									"value": "",
+									"description": "ID группы пользователей (если не задан список пользователей)",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server_url}}/api/v1/tasks",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tasks"
+							]
+						},
+						"description": "Создание задачи в CRM на пользователя или группу пользователей. Задача создается от пользователя выполнившего запрос `creator`.\n\nВы можете передать один ID пользователя или массив ID пользователей CRM. В случае когда вы передаете ID пользователей, будет создана группа пользователей, после чего создастся задача на эту группу.\n\nЕсли вы знаете ID группы пользователей, вы можете вместо пользователей указать сразу ID группы `group_id`, тогда задача будет создана сразу, без добавления новой группы в БД CRM."
+					},
+					"response": []
+				}
+			],
+			"description": "Управление задачами в CRM."
+		},
+		{
+			"name": "Пользователи API",
+			"item": [
+				{
+					"name": "Токен",
+					"item": [
+						{
+							"name": "Выпуск токена",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "",
+											"description": "Email пользователя API (обязательно)",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "",
+											"description": "Пароль (обязательно)",
+											"type": "text"
+										},
+										{
+											"key": "token_name",
+											"value": "",
+											"description": "Имя токена. Если пользователь авторизовался с телефона, можно передать, например модель телефона: iPhone 13 Pro. Если не передано сформируется автоматическое имя как uuid4.",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{server_url}}/api/v1/users/tokens",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"tokens"
+									]
+								},
+								"description": "Выпуск токена пользователя с указанием устройства или приложения использования."
+							},
+							"response": []
+						},
+						{
+							"name": "Мои токены",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{server_url}}/api/v1/users/tokens",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"tokens"
+									]
+								},
+								"description": "Все токены **авторизованного** пользователя."
+							},
+							"response": []
+						},
+						{
+							"name": "Токены пользователя",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{server_url}}/api/v1/users/{id}/tokens",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"{id}",
+										"tokens"
+									]
+								},
+								"description": "Все токены пользователя {id}."
+							},
+							"response": []
+						}
+					],
+					"description": "Токены служат для авторизации пользователя в API. Замена привычной авторизации по логину и паролю."
+				},
+				{
+					"name": "Пользователи",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "per_page",
+									"value": "15",
+									"description": "Количество возвращаемых записей за запрос (на страницу). Минимум 1, максимум 100.",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Номер страницы, в постраничной навигации.",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server_url}}/api/v1/users",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "Список пользователей API."
+					},
+					"response": []
+				},
+				{
+					"name": "Информация обо мне",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/v1/users/me",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"me"
+							]
+						},
+						"description": "Вернет информацию авторизованного пользователя. Авторизованный пользователь - тот от которого совершается запрос."
+					},
+					"response": []
+				},
+				{
+					"name": "Информация о пользователе",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/v1/users/{id}",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"{id}"
+							]
+						},
+						"description": "Передайте {id} пользователя API."
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить пользователя",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/v1/users/{id}",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"{id}"
+							]
+						},
+						"description": "Удалит пользователя API и все его токены, по указанному {id}.\n{id} - ID пользователя API, это не external_user_id."
+					},
+					"response": []
+				},
+				{
+					"name": "Регистрация пользователя",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "",
+									"description": "Имя пользователя (обязательно)",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "",
+									"description": "Email (обязательно)",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"description": "Пароль, мин. 8 символов (обязательно)",
+									"type": "text"
+								},
+								{
+									"key": "external_user_id",
+									"value": "",
+									"description": "ID пользователя CRM (обязательно)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server_url}}/api/v1/users",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ping",
+			"item": [
+				{
+					"name": "Проверка соединения с внешней БД",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/v1/ping/external-db",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"ping",
+								"external-db"
+							]
+						},
+						"description": "Проверяет соединение с внешней БД."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "1|w2AgAgC77NoRP9KAwSimZS0SAbFM8qohrQOgB2rW",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server_url",
+			"value": "http://localhost"
+		}
+	]
+}
